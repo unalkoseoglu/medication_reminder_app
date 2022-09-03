@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:medication_reminder_app/features/home/model/reminder_model.dart';
+
+import 'package:medication_reminder_app/feature/reminder/model/pill_model.dart';
 
 void main() {
   setUp(
@@ -11,9 +12,8 @@ void main() {
   test(
     ' ReminderModel Box Create and Put ',
     () async {
-      final box = await Hive.openBox<ReminderModel>('reminder');
-      box.add(
-          ReminderModel(name: 'name', image: 'adaddd', description: 'adsd a'));
+      final box = await Hive.openBox<PillModel>('reminder');
+      box.add(PillModel(id: '0', name: 'name', isComplete: false));
 
       expect(box.length, 1);
     },

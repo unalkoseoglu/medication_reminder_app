@@ -1,6 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:medication_reminder_app/feature/home/model/pill_model.dart';
 
-void main() => runApp(const MyApp());
+import 'package:medication_reminder_app/feature/home/view/home_view.dart';
+import 'package:provider/provider.dart';
+
+import 'feature/home/viewModel/home_view_model.dart';
+
+Future<void> main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter<PillModel>(PillModelAdapter());
+  var box = await Hive.openBox<PillModel>('medicin');
+
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => HomeViewModel()),
+    ],
+    child: const MyApp(),
+  ));
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -8,17 +26,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Material App',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Material App Bar'),
-        ),
-        body: Center(
-          child: Container(
-            child: const Text('Hello World'),
-          ),
-        ),
-      ),
-    );
+        title: 'Medication Reminder App',
+        debugShowCheckedModeBanner: false,
+        home: HomeView());
   }
 }
