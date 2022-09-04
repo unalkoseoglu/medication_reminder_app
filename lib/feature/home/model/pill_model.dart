@@ -1,4 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:medication_reminder_app/product/constants/enum/frequency_enum.dart';
 import 'package:uuid/uuid.dart';
 
 part 'pill_model.g.dart';
@@ -12,22 +13,41 @@ class PillModel extends HiveObject {
   String name;
 
   @HiveField(2)
-  String pillImage;
+  String? pillImage;
 
   @HiveField(3)
   bool isComplete;
+
+  @HiveField(4)
+  DateTime? time;
+
+  @HiveField(5)
+  String frequency;
+
+  @HiveField(6)
+  String schedule;
 
   PillModel(
       {required this.id,
       required this.name,
       this.isComplete = false,
-      required this.pillImage});
+      required this.pillImage,
+      this.time,
+      required this.frequency,
+      required this.schedule});
 
   factory PillModel.create(
-          {required String title, required String pillImage}) =>
+          {required String title,
+          required String pillImage,
+          DateTime? time,
+          String? frequency,
+          String? schedule}) =>
       PillModel(
           id: const Uuid().v1(),
           name: title,
           isComplete: false,
-          pillImage: pillImage);
+          pillImage: pillImage,
+          time: time ?? DateTime.now(),
+          frequency: frequency ?? FrequencyEnum.none.name,
+          schedule: 'After Dinner');
 }

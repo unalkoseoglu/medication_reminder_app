@@ -5,7 +5,7 @@ import '../../feature/home/model/pill_model.dart';
 
 abstract class ICacheManager<T> {
   final String key;
-  static const taskBoxName = 'medicin';
+  static const taskBoxName = 'medici';
   final Box<PillModel> _box = Hive.box<PillModel>(taskBoxName);
   ICacheManager(this.key);
 

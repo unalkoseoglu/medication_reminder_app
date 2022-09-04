@@ -10,7 +10,7 @@ import 'feature/home/viewModel/home_view_model.dart';
 Future<void> main() async {
   await Hive.initFlutter();
   Hive.registerAdapter<PillModel>(PillModelAdapter());
-  var box = await Hive.openBox<PillModel>('medicin');
+  var box = await Hive.openBox<PillModel>('medici');
 
   runApp(MultiProvider(
     providers: [
