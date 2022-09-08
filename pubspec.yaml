@@ -44,6 +44,12 @@ dependencies:
   #Date
   date_picker_timeline: ^1.2.3
   intl: ^0.17.0
+
+  #notification
+  flutter_local_notifications: ^9.9.1
+  flutter_native_timezone: ^2.0.0
+  rxdart: ^0.27.5
+  
   #Utility
   uuid: ^3.0.6
 

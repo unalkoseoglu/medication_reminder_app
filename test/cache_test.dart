@@ -17,8 +17,7 @@ void main() {
           name: 'name',
           isComplete: false,
           pillImage: '',
-          frequency: '',
-          schedule: '',
+          alarmTime: '09.08',
           time: DateTime.now()));
 
       expect(box.values.first.name, 'name');

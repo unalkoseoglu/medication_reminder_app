@@ -1,21 +1,32 @@
+import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:medication_reminder_app/product/constants/enum/frequency_enum.dart';
+import 'package:medication_reminder_app/core/base/viewModel/base_view_model.dart';
+import 'package:medication_reminder_app/product/service/local_notification_service.dart';
 
-import '../../../product/manager/medicine_manager.dart';
 import '../model/pill_model.dart';
 
-class HomeViewModel with ChangeNotifier {
-  late ICacheManager<PillModel> cacheManager;
-  DateTime selectDate = DateTime.now();
-  String? selectDateText;
+class HomeViewModel with ChangeNotifier, BaseViewModel {
+  late final LocalNotificationService notificationService;
 
-  String startTime = DateFormat("hh:mm a").format(DateTime.now()).toString();
-  List<String> frequency = FrequencyEnum.frequencyNames;
-  String? selectFrequency;
+  DateTime selectDate = DateTime.now();
+
+  DatePickerController? pickerController;
 
   HomeViewModel() {
-    cacheManager = PillCacheManager('medici');
+    notificationService = LocalNotificationService();
+    notificationService.intialize();
+    pickerController = DatePickerController();
+  }
+
+  void scheduleNotification({required PillModel item}) {
+    DateTime date = DateFormat.jm().parse(item.alarmTime.toString());
+    var myTime = DateFormat("HH:mm").format(date);
+    notificationService.showScheduleNotification(
+        id: item.key,
+        item: item,
+        hour: int.parse(myTime.toString().split(":")[0]),
+        minute: int.parse(myTime.toString().split(":")[1]));
   }
 
   void selectedDate(DateTime selectedDate) {
@@ -23,43 +34,12 @@ class HomeViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void getDateFromUser(BuildContext context) async {
-    DateTime? pickerDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2021),
-      lastDate: DateTime(2050),
-    );
-    if (pickerDate != null) {
-      selectDate = pickerDate;
-      selectDateText = DateFormat.yMd().format(selectDate);
+  Object? getSelectDate(List<PillModel> items, int index,
+      {required Widget child}) {
+    if (DateFormat.yMd().format(items[index].time) ==
+        DateFormat.yMd().format(selectDate)) {
+      child;
     }
-    notifyListeners();
-  }
-
-  void getTimeUser(BuildContext context) async {
-    var pickedTime = await _showTimePicker(context);
-    String formatedTime = pickedTime.format(context);
-    if (pickedTime != null) {
-      startTime = formatedTime;
-    }
-    notifyListeners();
-  }
-
-  _showTimePicker(BuildContext context) {
-    return showTimePicker(
-      initialEntryMode: TimePickerEntryMode.input,
-      context: context,
-      initialTime: TimeOfDay(
-        //![startTime] => 5:25 AM
-        hour: int.parse(startTime.split(":")[0]),
-        minute: int.parse(startTime.split(":")[1].split(" ")[0]),
-      ),
-    );
-  }
-
-  void getFrequency(String? selectedFrequency) {
-    selectFrequency = selectedFrequency;
-    notifyListeners();
+    return const Text('data');
   }
 }

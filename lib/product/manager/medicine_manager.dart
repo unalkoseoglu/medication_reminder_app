@@ -5,7 +5,7 @@ import '../../feature/home/model/pill_model.dart';
 
 abstract class ICacheManager<T> {
   final String key;
-  static const taskBoxName = 'medici';
+  static const taskBoxName = 'mds';
   final Box<PillModel> _box = Hive.box<PillModel>(taskBoxName);
   ICacheManager(this.key);
 
@@ -60,6 +60,7 @@ class PillCacheManager extends ICacheManager<PillModel> {
 
   @override
   Future<void> clear() async => await _box.clear();
+
   @override
   Future<void> deleteAllItems(List<PillModel> items) async =>
       await _box.deleteAll(items);
