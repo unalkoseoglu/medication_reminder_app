@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:medication_reminder_app/product/service/local_notification_service.dart';
 
 import '../../../core/base/viewModel/base_view_model.dart';
-import '../../home/model/pill_model.dart';
+import '../model/pill_model.dart';
 
 class ReminderViewModel with ChangeNotifier, BaseViewModel {
   late final LocalNotificationService notificationService;
@@ -13,11 +13,14 @@ class ReminderViewModel with ChangeNotifier, BaseViewModel {
 
   String? selectedImage;
   TextEditingController? nameController;
+  TextEditingController? amountController;
 
   ReminderViewModel() {
     notificationService = LocalNotificationService();
+
     notificationService.intialize();
     nameController = TextEditingController();
+    amountController = TextEditingController();
   }
 
   void addReminder(PillModel item) {

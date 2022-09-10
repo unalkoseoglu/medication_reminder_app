@@ -1,9 +1,11 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
-import 'package:medication_reminder_app/feature/home/model/pill_model.dart';
+
 import 'package:rxdart/rxdart.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
+
+import '../../feature/reminder/model/pill_model.dart';
 
 class LocalNotificationService {
   LocalNotificationService();
@@ -66,11 +68,18 @@ class LocalNotificationService {
     await _localNotificationService.show(id, title, body, details);
   }
 
-  Future<void> showScheduleNotification(
-      {required int id,
-      required int hour,
-      required int minute,
-      required PillModel item}) async {
+  Future<void> cancelNotification({
+    required int id,
+  }) async {
+    await _localNotificationService.cancel(id);
+  }
+
+  Future<void> showScheduleNotification({
+    required int id,
+    required int hour,
+    required int minute,
+    required PillModel item,
+  }) async {
     final details = await _notificationDetails();
 
     await _localNotificationService.zonedSchedule(

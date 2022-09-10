@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../../feature/home/model/pill_model.dart';
+import '../../feature/reminder/model/pill_model.dart';
 
 abstract class ICacheManager<T> {
   final String key;

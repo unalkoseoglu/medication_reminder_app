@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:medication_reminder_app/feature/home/model/pill_model.dart';
+
+import 'package:medication_reminder_app/feature/reminder/model/pill_model.dart';
 
 void main() {
   setUp(

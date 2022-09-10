@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:medication_reminder_app/core/base/viewModel/base_view_model.dart';
 import 'package:medication_reminder_app/product/service/local_notification_service.dart';
 
-import '../model/pill_model.dart';
+import '../../reminder/model/pill_model.dart';
 
 class HomeViewModel with ChangeNotifier, BaseViewModel {
   late final LocalNotificationService notificationService;
@@ -16,10 +16,11 @@ class HomeViewModel with ChangeNotifier, BaseViewModel {
   HomeViewModel() {
     notificationService = LocalNotificationService();
     notificationService.intialize();
+
     pickerController = DatePickerController();
   }
 
-  void scheduleNotification({required PillModel item}) {
+  Future<void> scheduleNotification({required PillModel item}) async {
     DateTime date = DateFormat.jm().parse(item.alarmTime.toString());
     var myTime = DateFormat("HH:mm").format(date);
     notificationService.showScheduleNotification(
@@ -34,12 +35,10 @@ class HomeViewModel with ChangeNotifier, BaseViewModel {
     notifyListeners();
   }
 
-  Object? getSelectDate(List<PillModel> items, int index,
-      {required Widget child}) {
-    if (DateFormat.yMd().format(items[index].time) ==
-        DateFormat.yMd().format(selectDate)) {
-      child;
-    }
-    return const Text('data');
+  Future<void> cancelReminder(
+      {required int index, required PillModel item}) async {
+    await notificationService.cancelNotification(id: item.key);
+    cacheManager.deleteAtItem(index);
+    notifyListeners();
   }
 }
