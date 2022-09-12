@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:medication_reminder_app/core/base/view/base_view.dart';
+import 'package:medication_reminder_app/core/extension/num_extension.dart';
 
 import 'package:medication_reminder_app/feature/home/viewModel/home_view_model.dart';
-import 'package:medication_reminder_app/feature/reminder/view/reminder_view.dart';
+import 'package:medication_reminder_app/product/widget/appBar/custom_app_bar.dart';
+import 'package:medication_reminder_app/product/widget/card/custom_card.dart';
 
 import 'package:provider/provider.dart';
 
-import '../../../product/widget/appBar/custom_sliver_app_bar.dart';
+import '../../../core/init/app/base/view/base_view.dart';
 import '../../reminder/model/pill_model.dart';
+import '../date/view/date_view.dart';
 
 class HomeView extends StatelessWidget {
-  const HomeView({Key? key}) : super(key: key);
-  final String title = 'Your Medicines\nReminder';
+  HomeView({Key? key}) : super(key: key);
+  final String title = DateFormat('d MMMM y').format(DateTime.now());
+  final subtitle = 'Hi Ünal';
 
   @override
   Widget build(BuildContext context) {
@@ -24,65 +27,84 @@ class HomeView extends StatelessWidget {
         },
         onPageBuilder: (BuildContext context, HomeViewModel viewModel) {
           return Scaffold(
-              floatingActionButton: FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ReminderView()));
-                },
-              ),
-              body: CustomScrollView(slivers: <Widget>[
-                CustomSliverAppBar(context,
-                    title: title,
-                    titleBarHeight: 110,
-                    statusBarHeight: MediaQuery.of(context).padding.top),
-                SliverToBoxAdapter(
-                  child: ValueListenableBuilder<Box<PillModel>>(
-                    valueListenable: viewModel.cacheManager.listenToReminder(),
-                    builder: (context, Box<PillModel> box, Widget? child) {
-                      var reminders = box.values.toList();
-
-                      return reminders.isEmpty
-                          ? const Center(child: Text('No Reminder'))
-                          : ListView.builder(
-                              shrinkWrap: true,
-                              primary: false,
-                              itemCount: reminders.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                //print(reminders[index].time);
-                                if (DateFormat.yMd()
-                                        .format(reminders[index].time) ==
-                                    DateFormat.yMd().format(context
-                                        .watch<HomeViewModel>()
-                                        .selectDate)) {
-                                  viewModel.scheduleNotification(
-                                    item: reminders[index],
-                                  );
-
-                                  return Card(
-                                      child: ListTile(
-                                    onLongPress: () => context
-                                        .read<HomeViewModel>()
-                                        .cancelReminder(
-                                            index: index,
-                                            item: reminders[index]),
-                                    leading: Image.asset(
-                                      reminders[index].pillImage ?? '',
-                                      fit: BoxFit.cover,
-                                      height: 30,
-                                      width: 30,
-                                    ),
-                                    title: Text(reminders[index].name),
-                                    subtitle: Text(reminders[index].alarmTime),
-                                  ));
-                                }
-                                return const SizedBox(height: 0);
-                              });
-                    },
-                  ),
-                ),
-              ]));
+            appBar: CustomAppBar(
+              context,
+              isHome: true,
+              subtitle: subtitle,
+              title: title,
+              child: _buildDateView(context),
+            ),
+            body: ReminderListView(viewModel: viewModel),
+          );
         });
+  }
+
+  SizedBox _buildDateView(BuildContext context) {
+    return SizedBox(
+        height: 130.h,
+        width: MediaQuery.of(context).size.width,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 10.0),
+          child: DateView(
+            DateTime.now(),
+            initialSelectDate: DateTime.now(),
+            onDateChange: (selectedDate) =>
+                context.read<HomeViewModel>().selectedDate(selectedDate),
+          ),
+        ));
+  }
+}
+
+class ReminderListView extends StatelessWidget {
+  const ReminderListView({
+    Key? key,
+    required this.viewModel,
+  }) : super(key: key);
+
+  final HomeViewModel viewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<Box<PillModel>>(
+      valueListenable: viewModel.cacheManager.listenToReminder(),
+      builder: (context, Box<PillModel> box, Widget? child) {
+        var reminders = box.values.toList();
+
+        return reminders.isEmpty
+            ? SizedBox(
+                height: 50.h,
+                child: const Center(
+                  child: Text('No Reminder'),
+                ),
+              )
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    primary: false,
+                    itemCount: reminders.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      if (DateFormat.yMd().format(reminders[index].time) ==
+                          DateFormat.yMd().format(
+                              context.watch<HomeViewModel>().selectDate)) {
+                        viewModel.scheduleNotification(item: reminders[index]);
+
+                        return _buildCard(context, reminders, index);
+                      }
+                      return const SizedBox.shrink();
+                    }),
+              );
+      },
+    );
+  }
+
+  CustomCard _buildCard(
+      BuildContext context, List<PillModel> reminders, int index) {
+    return CustomCard(
+        textTheme: Theme.of(context).textTheme,
+        reminder: reminders[index],
+        onLongPress: () => context
+            .read<HomeViewModel>()
+            .cancelReminder(index: index, item: reminders[index]));
   }
 }

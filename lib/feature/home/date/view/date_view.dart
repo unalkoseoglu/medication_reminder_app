@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:medication_reminder_app/core/extension/num_extension.dart';
 import 'package:provider/provider.dart';
 
 import '../viewModel/date_view_model.dart';
 
-class CustomDateView extends StatelessWidget {
+class DateView extends StatelessWidget {
   final DateTime startDate;
 
   final DateTime initialSelectDate;
@@ -28,7 +29,7 @@ class CustomDateView extends StatelessWidget {
 
   final int daysCount;
   final String locale;
-  CustomDateView(
+  DateView(
     this.startDate, {
     Key? key,
     required this.initialSelectDate,
@@ -57,7 +58,7 @@ class CustomDateView extends StatelessWidget {
                     date, context.watch<DateViewModel>().initialSelectedDate)
                 : false;
 
-        return _buildDateTimeline(
+        return _BuildDateTimeline(
           selectionColors: context.watch<DateViewModel>().isSelected
               ? selectionColors
               : [Colors.white, Colors.white],
@@ -80,9 +81,9 @@ class CustomDateView extends StatelessWidget {
   }
 }
 
-class _buildDateTimeline extends StatelessWidget {
+class _BuildDateTimeline extends StatelessWidget {
   final void Function(DateTime selectedDate)? onDateSelected;
-  const _buildDateTimeline({
+  const _BuildDateTimeline({
     Key? key,
     required this.onDateSelected,
     required this.selectionColors,
@@ -96,18 +97,18 @@ class _buildDateTimeline extends StatelessWidget {
   final List<BoxShadow> selectionBoxShadow;
 
   final DateTime date;
-  final Color selectedTextColor;
+  final Color? selectedTextColor;
 
   final String locale;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 10.0, top: 8, bottom: 8),
+      padding: const EdgeInsets.all(8),
       child: InkWell(
           child: Container(
-            margin: const EdgeInsets.all(3),
-            width: 60,
+            padding: const EdgeInsets.all(5),
+            width: 55.w,
             decoration: BoxDecoration(
               boxShadow: selectionBoxShadow,
               gradient: LinearGradient(
@@ -116,37 +117,31 @@ class _buildDateTimeline extends StatelessWidget {
                   colors: selectionColors),
               borderRadius: BorderRadius.circular(50),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  /*
-                  //?Date Month Text
-                   Text(
-                    DateFormat("MMM", locale)
-                        .format(viewModel.date)
-                        .toUpperCase(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium!
-                        .copyWith(
-                            color: selectedTextColor,
-                            fontWeight: FontWeight.w800),
-                  ), //Month */
-                  Text(
-                    date.day.toString(),
-                    style: Theme.of(context).textTheme.headline4!.copyWith(
-                        color: selectedTextColor, fontWeight: FontWeight.w700),
-                  ), //Date
-                  Text(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                //?Date Month Text
+                /*  Text(
+                  DateFormat("MMM", locale).format(date).toUpperCase(),
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      color: selectedTextColor ?? Colors.transparent,
+                      fontWeight: FontWeight.w800),
+                ), //Month */
+                Text(
+                  date.day.toString(),
+                  style: Theme.of(context).textTheme.headline4!.copyWith(
+                      color: selectedTextColor, fontWeight: FontWeight.w700),
+                ), //Date
+                Padding(
+                  padding: const EdgeInsets.only(top: 5.0),
+                  child: Text(
                     DateFormat("E", locale).format(date),
-                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    style: Theme.of(context).textTheme.subtitle2!.copyWith(
                         color: selectedTextColor, fontWeight: FontWeight.w700),
-                  ), //WeekDay
-                ],
-              ),
+                  ),
+                ), //WeekDay
+              ],
             ),
           ),
           onTap: () {

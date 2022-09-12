@@ -5,7 +5,7 @@ import '../../feature/reminder/model/pill_model.dart';
 
 abstract class ICacheManager<T> {
   final String key;
-  static const taskBoxName = 'mds';
+  static const taskBoxName = 'mdsii';
   final Box<PillModel> _box = Hive.box<PillModel>(taskBoxName);
   ICacheManager(this.key);
 
@@ -49,14 +49,14 @@ class PillCacheManager extends ICacheManager<PillModel> {
 
   @override
   Future<void> putAllItems(List<PillModel> items) async =>
-      await _box.putAll(Map.fromEntries(items.map((e) => MapEntry(e.id, e))));
+      await _box.putAll(Map.fromEntries(items.map((e) => MapEntry(e.key, e))));
 
   @override
   Future<void> putAtItem(int index, PillModel item) async =>
       await _box.putAt(index, item);
 
   @override
-  Future<void> putItem(PillModel item) async => await _box.put(item.id, item);
+  Future<void> putItem(PillModel item) async => await _box.put(item.key, item);
 
   @override
   Future<void> clear() async => await _box.clear();
@@ -69,7 +69,7 @@ class PillCacheManager extends ICacheManager<PillModel> {
   Future<void> deleteAtItem(int index) async => await _box.deleteAt(index);
 
   @override
-  Future<void> deleteItem(PillModel item) async => await _box.delete(item.id);
+  Future<void> deleteItem(PillModel item) async => await _box.delete(item.key);
 
   @override
   ValueListenable<Box<PillModel>> listenToReminder() {

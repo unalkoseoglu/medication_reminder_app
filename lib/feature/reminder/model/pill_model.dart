@@ -1,31 +1,28 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:uuid/uuid.dart';
 
 part 'pill_model.g.dart';
 
 @HiveType(typeId: 0)
 class PillModel extends HiveObject {
   @HiveField(0)
-  final String id;
-
-  @HiveField(1)
   String name;
 
-  @HiveField(2)
+  @HiveField(1)
   String? pillImage;
 
-  @HiveField(3)
+  @HiveField(2)
   bool isComplete;
 
-  @HiveField(4)
+  @HiveField(3)
   DateTime time;
 
-  @HiveField(5)
+  @HiveField(4)
   String alarmTime;
-
+  @HiveField(5)
+  String amount;
   PillModel(
-      {required this.id,
-      required this.name,
+      {required this.name,
+      required this.amount,
       this.isComplete = false,
       required this.pillImage,
       required this.time,
@@ -33,12 +30,13 @@ class PillModel extends HiveObject {
 
   factory PillModel.create(
           {required String title,
+          String? amount,
           required String pillImage,
           required DateTime time,
           required String alarmTime}) =>
       PillModel(
-          id: const Uuid().v1(),
           name: title,
+          amount: amount ?? ' ',
           isComplete: false,
           pillImage: pillImage,
           time: time,

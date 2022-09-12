@@ -85,7 +85,7 @@ class LocalNotificationService {
     await _localNotificationService.zonedSchedule(
       item.key,
       item.name,
-      item.name,
+      item.amount,
       _convertTime(hour, minute),
       details,
       androidAllowWhileIdle: true,

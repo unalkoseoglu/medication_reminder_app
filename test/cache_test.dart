@@ -14,8 +14,8 @@ void main() {
     () async {
       final box = await Hive.openBox<PillModel>('reminder');
       box.add(PillModel(
-          id: '0',
           name: 'name',
+          amount: '',
           isComplete: false,
           pillImage: '',
           alarmTime: '09.08',

@@ -27,7 +27,7 @@ class DateViewModel extends ChangeNotifier {
       onDateChange!(selectedDate);
     }
     initialSelectedDate = selectedDate;
-    print(initialSelectedDate);
+
     notifyListeners();
   }
 

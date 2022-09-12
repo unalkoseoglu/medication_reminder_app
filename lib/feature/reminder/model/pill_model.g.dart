@@ -17,12 +17,12 @@ class PillModelAdapter extends TypeAdapter<PillModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PillModel(
-      id: fields[0] as String,
-      name: fields[1] as String,
-      isComplete: fields[3] as bool,
-      pillImage: fields[2] as String?,
-      time: fields[4] as DateTime,
-      alarmTime: fields[5] as String,
+      name: fields[0] as String,
+      amount: fields[5] as String,
+      isComplete: fields[2] as bool,
+      pillImage: fields[1] as String?,
+      time: fields[3] as DateTime,
+      alarmTime: fields[4] as String,
     );
   }
 
@@ -31,17 +31,17 @@ class PillModelAdapter extends TypeAdapter<PillModel> {
     writer
       ..writeByte(6)
       ..writeByte(0)
-      ..write(obj.id)
-      ..writeByte(1)
       ..write(obj.name)
-      ..writeByte(2)
+      ..writeByte(1)
       ..write(obj.pillImage)
-      ..writeByte(3)
+      ..writeByte(2)
       ..write(obj.isComplete)
-      ..writeByte(4)
+      ..writeByte(3)
       ..write(obj.time)
+      ..writeByte(4)
+      ..write(obj.alarmTime)
       ..writeByte(5)
-      ..write(obj.alarmTime);
+      ..write(obj.amount);
   }
 
   @override

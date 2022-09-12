@@ -1,23 +1,24 @@
-import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:medication_reminder_app/core/base/viewModel/base_view_model.dart';
+
 import 'package:medication_reminder_app/product/service/local_notification_service.dart';
 
+import '../../../core/init/app/base/viewModel/base_view_model.dart';
 import '../../reminder/model/pill_model.dart';
 
 class HomeViewModel with ChangeNotifier, BaseViewModel {
   late final LocalNotificationService notificationService;
 
   DateTime selectDate = DateTime.now();
-
-  DatePickerController? pickerController;
+  bool isScroll = false;
 
   HomeViewModel() {
     notificationService = LocalNotificationService();
     notificationService.intialize();
+  }
 
-    pickerController = DatePickerController();
+  void clearOldReminder(List<PillModel> items) {
+    items.isEmpty ? cacheManager.clear() : null;
   }
 
   Future<void> scheduleNotification({required PillModel item}) async {
