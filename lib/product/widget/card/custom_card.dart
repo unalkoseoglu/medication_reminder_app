@@ -24,9 +24,10 @@ class CustomCard extends Card {
                     children: [
                       SizedBox(
                         height: 80.h,
-                        width: 80.w,
                         child: Image.asset(
                           reminder.pillImage ?? '',
+                          height: 70.h,
+                          width: 70.h,
                         ),
                       ),
                       Row(
@@ -45,8 +46,8 @@ class CustomCard extends Card {
                               Row(
                                 children: [
                                   SizedBox(
-                                    height: 30.h,
-                                    width: 210.w,
+                                    height: 25.h,
+                                    width: 200.w,
                                     child: ListView.builder(
                                       scrollDirection: Axis.horizontal,
                                       physics: const BouncingScrollPhysics(),
@@ -62,7 +63,7 @@ class CustomCard extends Card {
                                                   BorderRadius.circular(5),
                                               color: Colors.pink[50],
                                             ),
-                                            width: 100.w,
+                                            width: 95.w,
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.all(8.0),

@@ -1,0 +1,9 @@
+{
+    "medicineName":"Medicine Name",
+    "amount":"Amount",
+    "settings":"Settings",
+    "newReminder":"New Reminder",
+    "addReminder":"Add Reminder",
+    "type":"Type",
+    "noReminder":"No Reminder"
+}

@@ -1,5 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import 'package:medication_reminder_app/product/service/local_notification_service.dart';
 
@@ -10,6 +10,7 @@ class HomeViewModel with ChangeNotifier, BaseViewModel {
   late final LocalNotificationService notificationService;
 
   DateTime selectDate = DateTime.now();
+
   bool isScroll = false;
 
   HomeViewModel() {
@@ -22,7 +23,7 @@ class HomeViewModel with ChangeNotifier, BaseViewModel {
   }
 
   Future<void> scheduleNotification({required PillModel item}) async {
-    DateTime date = DateFormat.jm().parse(item.alarmTime.toString());
+    DateTime date = DateFormat.Hm().parse(item.alarmTime.toString());
     var myTime = DateFormat("HH:mm").format(date);
     notificationService.showScheduleNotification(
         id: item.key,

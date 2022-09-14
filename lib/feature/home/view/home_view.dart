@@ -1,9 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:medication_reminder_app/core/extension/num_extension.dart';
 
 import 'package:medication_reminder_app/feature/home/viewModel/home_view_model.dart';
+import 'package:medication_reminder_app/product/init/lang/locale_keys.g.dart';
 import 'package:medication_reminder_app/product/widget/appBar/custom_app_bar.dart';
 import 'package:medication_reminder_app/product/widget/card/custom_card.dart';
 
@@ -14,12 +15,17 @@ import '../../reminder/model/pill_model.dart';
 import '../date/view/date_view.dart';
 
 class HomeView extends StatelessWidget {
-  HomeView({Key? key}) : super(key: key);
-  final String title = DateFormat('d MMMM y').format(DateTime.now());
+  const HomeView({Key? key}) : super(key: key);
+  // final String titleTR =
+  // HomeViewModel().dateFormat!.format(DateTime.now()).toString();
+
   final subtitle = 'Hi Ünal';
 
   @override
   Widget build(BuildContext context) {
+    final String title = DateFormat('d MMMM y', context.locale.toString())
+        .format(DateTime.now())
+        .toString();
     return BaseView<HomeViewModel>(
         viewModel: HomeViewModel(),
         onModelReady: (model) {
@@ -73,8 +79,8 @@ class ReminderListView extends StatelessWidget {
         return reminders.isEmpty
             ? SizedBox(
                 height: 50.h,
-                child: const Center(
-                  child: Text('No Reminder'),
+                child: Center(
+                  child: Text(LocaleKeys.noReminder.tr()),
                 ),
               )
             : Padding(
@@ -84,8 +90,9 @@ class ReminderListView extends StatelessWidget {
                     primary: false,
                     itemCount: reminders.length,
                     itemBuilder: (BuildContext context, int index) {
-                      if (DateFormat.yMd().format(reminders[index].time) ==
-                          DateFormat.yMd().format(
+                      if (DateFormat.yMd(context.locale.toString())
+                              .format(reminders[index].time) ==
+                          DateFormat.yMd(context.locale.toString()).format(
                               context.watch<HomeViewModel>().selectDate)) {
                         viewModel.scheduleNotification(item: reminders[index]);
 

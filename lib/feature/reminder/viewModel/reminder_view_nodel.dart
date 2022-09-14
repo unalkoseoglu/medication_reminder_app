@@ -39,14 +39,6 @@ class ReminderViewModel with ChangeNotifier, BaseViewModel {
     notifyListeners();
   }
 
-  void getTimeUser(context) async {
-    var alarmTime = await _showTimePicker(context);
-    String formatedTime = alarmTime.format(context);
-    startTime = formatedTime;
-
-    notifyListeners();
-  }
-
   void selectImageChange(String imageSelect) {
     if (onChangeImage != null) {
       onChangeImage!(imageSelect);
@@ -56,15 +48,40 @@ class ReminderViewModel with ChangeNotifier, BaseViewModel {
     notifyListeners();
   }
 
-  _showTimePicker(BuildContext context) {
+  void getTimeUser(context, reminderTime) async {
+    var alarmTime = await reminderTime;
+
+    String formatedTime = alarmTime != null
+        ? alarmTime.format(context)
+        : TimeOfDay.now().format(context);
+    startTime = formatedTime;
+
+    notifyListeners();
+  }
+
+  /* _showTimePicker(BuildContext context) {
     return showTimePicker(
-        initialEntryMode: TimePickerEntryMode.dial,
+        initialEntryMode: TimePickerEntryMode.input,
+        builder: (_, child) {
+          if (LanguageConstants.instance.trLocale ==
+              context.locale.toString()) {
+            return MediaQuery(
+                data: MediaQuery.of(context)
+                    .copyWith(alwaysUse24HourFormat: true),
+                child: child!);
+          } else {
+            return MediaQuery(
+                data: MediaQuery.of(context)
+                    .copyWith(alwaysUse24HourFormat: false),
+                child: child!);
+          }
+        },
         cancelText: '',
         context: context,
         initialTime: TimeOfDay(
             hour: int.parse(startTime.split(":")[0]),
-            minute: int.parse(startTime.split(":")[1].split(" ")[0])));
-  }
+            minute: int.parse(startTime.split(":")[1].split('')[0])));
+  } */
 
   /*
   //? Zaman aralığı seçimi

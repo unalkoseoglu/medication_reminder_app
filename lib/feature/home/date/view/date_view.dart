@@ -1,5 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:medication_reminder_app/core/extension/num_extension.dart';
 import 'package:provider/provider.dart';
 
@@ -21,21 +21,21 @@ class DateView extends StatelessWidget {
   final Color deactivedTextColor = MyColors().newBuryPort;
   final List<BoxShadow> selectionBoxShadow = <BoxShadow>[
     BoxShadow(
-        color: MyColors().heartFelt,
-        blurRadius: 12,
-        spreadRadius: 2,
-        offset: const Offset(1, 2))
+      color: MyColors().heartFelt,
+      blurRadius: 8,
+      spreadRadius: 1,
+      //offset: const Offset(1, 1),
+    )
   ];
 
   final int daysCount;
-  final String locale;
+
   DateView(
     this.startDate, {
     Key? key,
     required this.initialSelectDate,
     required this.onDateChange,
     this.daysCount = 250,
-    this.locale = 'en_US',
   }) : super(key: key);
 
   final DateViewModel viewModel = DateViewModel();
@@ -66,7 +66,6 @@ class DateView extends StatelessWidget {
           selectedTextColor: context.watch<DateViewModel>().isSelected
               ? selectedTextColor
               : deactivedTextColor,
-          locale: locale,
           onDateSelected: (selectedDate) {
             onDateChange(selectedDate);
 
@@ -90,7 +89,6 @@ class _BuildDateTimeline extends StatelessWidget {
     required this.selectionBoxShadow,
     required this.date,
     required this.selectedTextColor,
-    required this.locale,
   }) : super(key: key);
 
   final List<Color> selectionColors;
@@ -98,8 +96,6 @@ class _BuildDateTimeline extends StatelessWidget {
 
   final DateTime date;
   final Color? selectedTextColor;
-
-  final String locale;
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +132,7 @@ class _BuildDateTimeline extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 5.0),
                   child: Text(
-                    DateFormat("E", locale).format(date),
+                    DateFormat("E", context.locale.toString()).format(date),
                     style: Theme.of(context).textTheme.subtitle2!.copyWith(
                         color: selectedTextColor, fontWeight: FontWeight.w700),
                   ),

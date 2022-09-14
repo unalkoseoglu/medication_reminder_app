@@ -1,7 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:medication_reminder_app/core/extension/num_extension.dart';
 
-class CustomTextFormField extends TextFormField {
+class CustomTextFormField extends TextField {
   CustomTextFormField({
     Key? key,
     String? hint,
@@ -47,7 +48,7 @@ class ITextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(title,
+        Text(title.tr(),
             style: Theme.of(context)
                 .textTheme
                 .labelLarge!
