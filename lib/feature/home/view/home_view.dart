@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:medication_reminder_app/core/extension/num_extension.dart';
+import 'package:medication_reminder_app/feature/detail/view/detail_view.dart';
 
 import 'package:medication_reminder_app/feature/home/viewModel/home_view_model.dart';
 import 'package:medication_reminder_app/product/init/lang/locale_keys.g.dart';
@@ -110,8 +112,13 @@ class ReminderListView extends StatelessWidget {
     return CustomCard(
         textTheme: Theme.of(context).textTheme,
         reminder: reminders[index],
-        onLongPress: () => context
+        onLongPress: () {
+          context.router.pushWidget(DetailView(reminder: reminders[index]));
+        }
+
+        /* context
             .read<HomeViewModel>()
-            .cancelReminder(index: index, item: reminders[index]));
+            .cancelReminder(index: index, item: reminders[index]) */
+        );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:medication_reminder_app/product/init/lang/locale_keys.g.dart';
+import 'package:medication_reminder_app/product/init/theme/app_theme_light.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/extension/image_extension.dart';
@@ -42,11 +43,11 @@ class ReminderView extends StatelessWidget {
               _buildImage(),
               Container(
                 decoration: BoxDecoration(
-                    color: Colors.red[50],
+                    color: AppThemeLight.instance.colorSchemeLight?.cloudBreak,
                     borderRadius:
                         const BorderRadius.vertical(top: Radius.circular(30))),
                 height:
-                    MediaQuery.of(context).size.height - 270.h - kToolbarHeight,
+                    MediaQuery.of(context).size.height - 240.h - kToolbarHeight,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24.0),
                   child: Column(
@@ -134,9 +135,8 @@ class ReminderView extends StatelessWidget {
     return MyElevatedButton(
       color: context.watch<ReminderViewModel>().selectedImage ==
               PillEnum.pillNames[index].toPng
-          ? Colors.blue
-          : null,
-      isIcon: true,
+          ? AppThemeLight.instance.theme.colorScheme.primary
+          : Colors.white,
       onPressed: () {
         context.read<ReminderViewModel>().selectImageChange(
             viewModel.selectedImage = PillEnum.pillNames[index].toPng);
@@ -152,7 +152,10 @@ class ReminderView extends StatelessWidget {
 
   Expanded _timeButton(BuildContext context, ReminderViewModel viewModel) {
     return Expanded(
-      child: MyElevatedButton(
+        child: IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons
+                .timer_sharp)) /* MyElevatedButton(
           onPressed: () {
             context
                 .read<ReminderViewModel>()
@@ -161,8 +164,8 @@ class ReminderView extends StatelessWidget {
           child: const Icon(
             Icons.timer_sharp,
             size: 25,
-          )),
-    );
+          )), */
+        );
   }
 
   _showTimePicker(BuildContext context, ReminderViewModel viewModel) {
@@ -204,11 +207,11 @@ class ReminderView extends StatelessWidget {
 
   SizedBox _buildImage() {
     return SizedBox(
-      height: 250.h,
+      height: 200.h,
       child: Center(
         child: Image.asset(
           'medicine'.toPng,
-          height: 200.h,
+          height: 170.h,
         ),
       ),
     );

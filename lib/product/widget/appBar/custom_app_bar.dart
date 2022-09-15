@@ -12,7 +12,6 @@ class CustomAppBar extends AppBar {
       void Function()? onPressed})
       : super(
             key: key,
-            iconTheme: const IconThemeData(color: Colors.black, size: 40),
             title:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Padding(
@@ -26,7 +25,7 @@ class CustomAppBar extends AppBar {
             ]),
             shape: const RoundedRectangleBorder(
                 borderRadius:
-                    BorderRadius.vertical(bottom: Radius.circular(15))),
+                    BorderRadius.vertical(bottom: Radius.circular(10))),
             leading: isHome
                 ? null
                 : IconButton(
@@ -37,10 +36,6 @@ class CustomAppBar extends AppBar {
                   ),
             automaticallyImplyLeading: false,
             centerTitle: false,
-            titleTextStyle: Theme.of(context)
-                .textTheme
-                .titleLarge!
-                .copyWith(fontWeight: FontWeight.w600),
             bottom: isHome
                 ? PreferredSize(
                     preferredSize: Size.fromHeight(140.h),

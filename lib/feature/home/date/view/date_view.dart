@@ -13,15 +13,15 @@ class DateView extends StatelessWidget {
   final void Function(DateTime selectedDate) onDateChange;
 
   final List<Color> selectionColors = <Color>[
-    MyColors().heartFelt,
-    MyColors().ultraRed,
+    MyColors().jamaicanJade,
+    MyColors().stampPadGreen,
   ];
   final Color deactivedColor = Colors.white;
   final Color selectedTextColor = Colors.white;
   final Color deactivedTextColor = MyColors().newBuryPort;
   final List<BoxShadow> selectionBoxShadow = <BoxShadow>[
     BoxShadow(
-      color: MyColors().heartFelt,
+      color: MyColors().jamaicanJade,
       blurRadius: 8,
       spreadRadius: 1,
       //offset: const Offset(1, 1),
@@ -150,6 +150,8 @@ class _BuildDateTimeline extends StatelessWidget {
 }
 
 class MyColors {
+  final Color jamaicanJade = const Color(0xff62dbc6);
+  final Color stampPadGreen = const Color(0xff309f8c);
   final Color heartFelt = const Color(0xffffafc6);
   final Color ultraRed = const Color(0xffff6c87);
   final Color yankesBlue = const Color(0xff1e2843);

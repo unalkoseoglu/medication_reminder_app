@@ -5,8 +5,8 @@ import 'package:medication_reminder_app/product/widget/appBar/custom_app_bar.dar
 
 import '../../../product/init/lang/locale_keys.g.dart';
 
-class SettingsWiew extends StatelessWidget {
-  const SettingsWiew({Key? key}) : super(key: key);
+class SettingsView extends StatelessWidget {
+  const SettingsView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

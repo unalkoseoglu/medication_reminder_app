@@ -11,8 +11,6 @@ class CustomCard extends Card {
     required TextTheme textTheme,
   }) : super(
             key: key,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             child: InkWell(
               onLongPress: onLongPress,
               child: Padding(
@@ -26,8 +24,8 @@ class CustomCard extends Card {
                         height: 80.h,
                         child: Image.asset(
                           reminder.pillImage ?? '',
-                          height: 70.h,
-                          width: 70.h,
+                          height: 60.h,
+                          width: 60.h,
                         ),
                       ),
                       Row(
