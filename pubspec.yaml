@@ -27,6 +27,9 @@ dependencies:
   #Date
   intl: ^0.17.0
 
+  #Utility
+  lottie: ^1.4.1
+
   #Notification
   flutter_local_notifications: ^9.9.1
   flutter_native_timezone: ^2.0.0
@@ -50,6 +53,10 @@ flutter:
   assets:
     - assets/image/
     - assets/lang/
+    - assets/lottie/
+    - assets/icon/
+
+
   
   # example:
   # fonts:

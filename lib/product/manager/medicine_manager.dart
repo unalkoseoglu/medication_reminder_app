@@ -1,14 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:medication_reminder_app/core/init/app/constants/cache_constants.dart';
 
 import '../../feature/reminder/model/pill_model.dart';
 
 abstract class ICacheManager<T> {
   final String key;
-  static const taskBoxName = 'mdsii';
-  final Box<PillModel> _box = Hive.box<PillModel>(taskBoxName);
-  ICacheManager(this.key);
 
+  ICacheManager(
+    this.key,
+  );
+  late Box<T> box;
+  void registerAdapters();
   Future<void> addItem(T item);
   Future<void> addAllItems(List<T> items);
 
@@ -31,48 +34,57 @@ abstract class ICacheManager<T> {
 
 class PillCacheManager extends ICacheManager<PillModel> {
   PillCacheManager(super.key);
+  @override
+  Box<PillModel> get box => Hive.box<PillModel>(key);
 
   @override
   Future<void> addAllItems(List<PillModel> items) async =>
-      await _box.addAll(items);
+      await box.addAll(items);
 
   @override
-  Future<void> addItem(PillModel item) async => await _box.add(item);
+  Future<void> addItem(PillModel item) async => await box.add(item);
   @override
-  List<PillModel>? getAllItem() => _box.values.toList();
+  List<PillModel>? getAllItem() => box.values.toList();
 
   @override
-  PillModel? getAtItem(int index) => _box.getAt(index);
+  PillModel? getAtItem(int index) => box.getAt(index);
 
   @override
-  PillModel? getItem(String key) => _box.get(key);
+  PillModel? getItem(String key) => box.get(key);
 
   @override
   Future<void> putAllItems(List<PillModel> items) async =>
-      await _box.putAll(Map.fromEntries(items.map((e) => MapEntry(e.key, e))));
+      await box.putAll(Map.fromEntries(items.map((e) => MapEntry(e.key, e))));
 
   @override
   Future<void> putAtItem(int index, PillModel item) async =>
-      await _box.putAt(index, item);
+      await box.putAt(index, item);
 
   @override
-  Future<void> putItem(PillModel item) async => await _box.put(item.key, item);
+  Future<void> putItem(PillModel item) async => await box.put(item.key, item);
 
   @override
-  Future<void> clear() async => await _box.clear();
+  Future<void> clear() async => await box.clear();
 
   @override
   Future<void> deleteAllItems(List<PillModel> items) async =>
-      await _box.deleteAll(items);
+      await box.deleteAll(items);
 
   @override
-  Future<void> deleteAtItem(int index) async => await _box.deleteAt(index);
+  Future<void> deleteAtItem(int index) async => await box.deleteAt(index);
 
   @override
-  Future<void> deleteItem(PillModel item) async => await _box.delete(item.key);
+  Future<void> deleteItem(PillModel item) async => await box.delete(item.key);
 
   @override
   ValueListenable<Box<PillModel>> listenToReminder() {
-    return _box.listenable();
+    return box.listenable();
+  }
+
+  @override
+  void registerAdapters() {
+    if (!Hive.isAdapterRegistered(CacheConstants.pillCacheTypeId)) {
+      Hive.registerAdapter(PillModelAdapter());
+    }
   }
 }

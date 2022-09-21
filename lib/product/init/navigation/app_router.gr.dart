@@ -23,7 +23,7 @@ class _$AppRouter extends RootStackRouter {
     },
     ReminderRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
-          routeData: routeData, child: const ReminderView());
+          routeData: routeData, child: ReminderView());
     },
     HomeRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
@@ -31,7 +31,7 @@ class _$AppRouter extends RootStackRouter {
     },
     SettingsRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
-          routeData: routeData, child: const SettingsView());
+          routeData: routeData, child: SettingsView());
     },
     DetailRoute.name: (routeData) {
       final args = routeData.argsAs<DetailRouteArgs>();

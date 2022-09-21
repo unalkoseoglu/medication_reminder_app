@@ -5,16 +5,15 @@ import 'package:medication_reminder_app/core/init/app/constants/app_constants.da
 import 'package:medication_reminder_app/core/keys/global_key.dart';
 
 class ScreenSize {
-  static ScreenSize? _instance;
-  static ScreenSize get instance {
-    _instance ??= ScreenSize._init();
-    return _instance!;
+  static final ScreenSize _instance = ScreenSize._init();
+
+  factory ScreenSize() {
+    return _instance;
   }
 
   ScreenSize._init();
-
-  Size get screenSize => Size(AppConstants().designDeviceSize.width,
-      AppConstants().designDeviceSize.height);
+//late error
+  Size screenSize = AppConstants().designDeviceSize;
 
   double getHeight(num heightNum) {
     double height = (screenSize.height * heightNum) /

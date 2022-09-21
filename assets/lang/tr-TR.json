@@ -1,9 +1,12 @@
 {
+    "home":"Ana Sayfa",
 "medicineName":"İlaç İsmi",
 "amount":"Miktar",
 "settings":"Ayarlar",
 "newReminder":"Yeni Hatırlatıcı",
 "addReminder":"Hatırlatıcı Ekle",
 "type":"Tip",
-"noReminder":"Hatırlatıcı Yok"
+"noReminder":"Hatırlatıcı Yok",
+"lang":"Dil",
+"language":"Türkçe"
 }

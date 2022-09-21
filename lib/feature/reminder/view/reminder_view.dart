@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:medication_reminder_app/core/extension/context_extension.dart';
 import 'package:medication_reminder_app/product/init/lang/locale_keys.g.dart';
 import 'package:medication_reminder_app/product/init/theme/app_theme_light.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +10,6 @@ import '../../../core/init/app/base/view/base_view.dart';
 import '../../../product/widget/field/custom_text_field.dart';
 import '../model/pill_model.dart';
 
-import 'package:medication_reminder_app/core/extension/num_extension.dart';
 import 'package:medication_reminder_app/feature/home/viewModel/home_view_model.dart';
 import 'package:medication_reminder_app/feature/reminder/viewModel/reminder_view_nodel.dart';
 import 'package:medication_reminder_app/product/constants/enum/pill_enum.dart';
@@ -21,10 +21,6 @@ class ReminderView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //!bu veriyi home sayfasından çekeceğiz.
-    final String subtitle =
-        DateFormat('EEEE, d MMMM y', context.locale.toString())
-            .format(context.watch<HomeViewModel>().selectDate);
     return BaseView<ReminderViewModel>(
       viewModel: ReminderViewModel(),
       onModelReady: (model) {
@@ -34,40 +30,48 @@ class ReminderView extends StatelessWidget {
           Scaffold(
         appBar: CustomAppBar(
           context,
+          isLeading: true,
           title: LocaleKeys.newReminder.tr(),
-          subtitle: subtitle,
+          subtitle: context
+              .watch<ReminderViewModel>()
+              .subtitle(context.locale.toString()),
+          preferredSize: context.isKeyboradOpen ? 0 : 0.22,
+          child: _buildImage(context),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              _buildImage(),
-              Container(
-                decoration: BoxDecoration(
-                    color: AppThemeLight.instance.colorSchemeLight?.cloudBreak,
-                    borderRadius:
-                        const BorderRadius.vertical(top: Radius.circular(30))),
-                height:
-                    MediaQuery.of(context).size.height - 240.h - kToolbarHeight,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        body: SafeArea(
+          child: Padding(
+            padding: context.paddingTop(0.06),
+            child: Container(
+              height: context.h,
+              decoration: BoxDecoration(
+                  color: AppThemeLight.instance.colorSchemeLight?.cloudBreak,
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(30))),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: SingleChildScrollView(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      _nameField(viewModel),
+                      context.emptySizedHeightBox(0.1),
+                      _nameTextField(viewModel),
+                      context.emptySizedHeightBox(0.1),
                       Row(
                         children: [
-                          _amountField(viewModel),
-                          const Spacer(),
-                          _timeButton(context, viewModel)
+                          _amountTextField(viewModel),
+                          _timeButton(context, viewModel),
                         ],
                       ),
+                      context.emptySizedHeightBox(0.1),
                       _imageButtonList(context, viewModel),
-                      _addReminderButton(viewModel, context)
+                      context.emptySizedHeightBox(0.1),
+                      _addReminderButton(viewModel, context),
+                      context.emptySizedHeightBox(0.05),
                     ],
                   ),
                 ),
-              )
-            ],
+              ),
+            ),
           ),
         ),
       ),
@@ -111,11 +115,12 @@ class ReminderView extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 10.0),
           child: SizedBox(
-            height: 90.h,
+            height: context.height(0.1),
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: PillEnum.pillNames.length,
               itemBuilder: (_, int index) {
+                context.watch<ReminderViewModel>().selectImage;
                 return Padding(
                   padding: const EdgeInsets.only(
                     right: 10.0,
@@ -142,7 +147,7 @@ class ReminderView extends StatelessWidget {
             viewModel.selectedImage = PillEnum.pillNames[index].toPng);
       },
       child: SizedBox(
-        width: 60.w,
+        width: context.height(0.07),
         child: Image.asset(
           PillEnum.pillNames[index].toPng,
         ),
@@ -153,24 +158,17 @@ class ReminderView extends StatelessWidget {
   Expanded _timeButton(BuildContext context, ReminderViewModel viewModel) {
     return Expanded(
         child: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons
-                .timer_sharp)) /* MyElevatedButton(
-          onPressed: () {
-            context
-                .read<ReminderViewModel>()
-                .getTimeUser(context, _showTimePicker(context, viewModel));
-          },
-          child: const Icon(
-            Icons.timer_sharp,
-            size: 25,
-          )), */
-        );
+            onPressed: () {
+              context
+                  .read<ReminderViewModel>()
+                  .getTimeUser(context, _showTimePicker(context, viewModel));
+            },
+            icon: const Icon(Icons.timer_sharp)));
   }
 
   _showTimePicker(BuildContext context, ReminderViewModel viewModel) {
     return showTimePicker(
-        initialEntryMode: TimePickerEntryMode.input,
+        initialEntryMode: TimePickerEntryMode.dial,
         builder: (_, child) {
           return MediaQuery(
               data: MediaQuery.of(context).copyWith(
@@ -178,14 +176,14 @@ class ReminderView extends StatelessWidget {
                       'tr_TR' == context.locale.toString() ? true : false),
               child: child!);
         },
-        cancelText: '',
+        //cancelText: '',
         context: context,
         initialTime: TimeOfDay(
             hour: int.parse(viewModel.startTime.split(":")[0]),
             minute: int.parse(viewModel.startTime.split(":")[1].split('')[0])));
   }
 
-  Expanded _amountField(ReminderViewModel viewModel) {
+  Expanded _amountTextField(ReminderViewModel viewModel) {
     return Expanded(
       flex: 2,
       child: ITextField(
@@ -197,7 +195,7 @@ class ReminderView extends StatelessWidget {
     );
   }
 
-  ITextField _nameField(ReminderViewModel viewModel) {
+  ITextField _nameTextField(ReminderViewModel viewModel) {
     return ITextField(
       title: LocaleKeys.medicineName,
       hint: 'Paracematol XL2',
@@ -205,15 +203,10 @@ class ReminderView extends StatelessWidget {
     );
   }
 
-  SizedBox _buildImage() {
-    return SizedBox(
-      height: 200.h,
-      child: Center(
-        child: Image.asset(
-          'medicine'.toPng,
-          height: 170.h,
-        ),
-      ),
+  Widget _buildImage(BuildContext context) {
+    return Image.asset(
+      'medicine'.toPng,
+      height: context.isKeyboradOpen ? 0 : context.height(0.17),
     );
   }
 }

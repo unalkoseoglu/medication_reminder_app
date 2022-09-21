@@ -4,6 +4,8 @@ import 'package:medication_reminder_app/product/constants/enum/pill_enum.dart';
 import 'package:medication_reminder_app/product/service/local_notification_service.dart';
 
 import '../../../core/init/app/base/viewModel/base_view_model.dart';
+import '../../../core/init/app/constants/cache_constants.dart';
+import '../../../product/manager/medicine_manager.dart';
 import '../model/pill_model.dart';
 
 class ReminderViewModel with ChangeNotifier, BaseViewModel {
@@ -11,6 +13,8 @@ class ReminderViewModel with ChangeNotifier, BaseViewModel {
   bool isSelect = false;
   DateTime selectDate = DateTime.now();
   String startTime = DateFormat("HH:mm a").format(DateTime.now()).toString();
+  String subtitle(locale) =>
+      DateFormat('EEEE, d MMMM y', locale).format(selectDate);
 
   String selectedImage = PillEnum.pillNames[0];
   bool selectImage = false;
@@ -18,10 +22,11 @@ class ReminderViewModel with ChangeNotifier, BaseViewModel {
 
   TextEditingController? nameController;
   TextEditingController? amountController;
+  late ICacheManager<PillModel> cacheManager;
 
   ReminderViewModel() {
     notificationService = LocalNotificationService();
-
+    cacheManager = PillCacheManager(CacheConstants.pillCache);
     notificationService.intialize();
     nameController = TextEditingController();
     amountController = TextEditingController();

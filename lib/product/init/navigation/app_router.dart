@@ -12,11 +12,10 @@ part 'app_router.gr.dart';
 @MaterialAutoRouter(
   replaceInRouteName: 'View,Route',
   routes: <AutoRoute>[
-    AutoRoute(page: TabView, initial: true, children: [
-      AutoRoute(
-          page: HomeView, children: <AutoRoute>[AutoRoute(page: DetailView)]),
-      AutoRoute(page: SettingsView)
-    ]),
+    AutoRoute(
+        page: TabView,
+        initial: true,
+        children: [AutoRoute(page: HomeView), AutoRoute(page: SettingsView)]),
     AutoRoute(page: ReminderView),
   ],
 )

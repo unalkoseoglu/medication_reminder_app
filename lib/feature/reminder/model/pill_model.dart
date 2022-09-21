@@ -1,8 +1,10 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../../../core/init/app/constants/cache_constants.dart';
+
 part 'pill_model.g.dart';
 
-@HiveType(typeId: 0)
+@HiveType(typeId: CacheConstants.pillCacheTypeId)
 class PillModel extends HiveObject {
   @HiveField(0)
   String name;

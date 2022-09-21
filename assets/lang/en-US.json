@@ -1,9 +1,12 @@
 {
+    "home":"Home",
     "medicineName":"Medicine Name",
     "amount":"Amount",
     "settings":"Settings",
     "newReminder":"New Reminder",
     "addReminder":"Add Reminder",
     "type":"Type",
-    "noReminder":"No Reminder"
+    "noReminder":"No Reminder",
+    "lang":"Language",
+    "language":"English"
 }

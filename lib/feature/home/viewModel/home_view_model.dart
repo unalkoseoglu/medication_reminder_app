@@ -1,5 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:medication_reminder_app/core/init/app/constants/cache_constants.dart';
+import 'package:medication_reminder_app/product/manager/medicine_manager.dart';
 
 import 'package:medication_reminder_app/product/service/local_notification_service.dart';
 
@@ -10,12 +13,13 @@ class HomeViewModel with ChangeNotifier, BaseViewModel {
   late final LocalNotificationService notificationService;
 
   DateTime selectDate = DateTime.now();
-
   bool isScroll = false;
+  late ICacheManager<PillModel> cacheManager;
 
   HomeViewModel() {
     notificationService = LocalNotificationService();
     notificationService.intialize();
+    cacheManager = PillCacheManager(CacheConstants.pillCache);
   }
 
   void clearOldReminder(List<PillModel> items) {

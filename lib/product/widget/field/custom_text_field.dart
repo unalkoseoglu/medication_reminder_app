@@ -1,10 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:medication_reminder_app/core/extension/num_extension.dart';
+import 'package:medication_reminder_app/core/extension/context_extension.dart';
 
 class CustomTextFormField extends TextField {
   CustomTextFormField({
     Key? key,
+    required BuildContext context,
     String? hint,
     String? errorText,
     TextEditingController? controller,
@@ -17,13 +18,11 @@ class CustomTextFormField extends TextField {
             controller: controller,
             textInputAction: TextInputAction.next,
             style: textStyle,
-            cursorHeight: 30.h,
+            cursorHeight: context.height(0.02),
             scrollPadding: const EdgeInsets.all(10),
             decoration: InputDecoration(
               errorText: errorText,
               hintStyle: hintStyle,
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black54, width: 0.8.w)),
               suffixIcon: icon,
               hintText: hint,
             ));
@@ -49,22 +48,19 @@ class ITextField extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(title.tr(),
-            style: Theme.of(context)
-                .textTheme
-                .labelLarge!
+            style: context.textTheme.labelLarge!
                 .copyWith(fontWeight: FontWeight.w600, color: Colors.black54)),
         CustomTextFormField(
+          context: context,
           controller: controller,
-          textStyle: Theme.of(context)
-              .textTheme
-              .headline6!
+          textStyle: context.textTheme.headline6!
               .copyWith(fontWeight: FontWeight.w600),
           icon: Icon(
             icon,
             size: 30,
           ),
           hint: hint,
-          hintStyle: Theme.of(context).textTheme.subtitle2,
+          hintStyle: context.textTheme.subtitle2,
         ),
       ],
     );

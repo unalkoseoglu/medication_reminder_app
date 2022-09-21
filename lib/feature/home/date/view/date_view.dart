@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:medication_reminder_app/core/extension/num_extension.dart';
+import 'package:medication_reminder_app/core/extension/context_extension.dart';
 import 'package:provider/provider.dart';
 
 import '../viewModel/date_view_model.dart';
@@ -104,7 +104,7 @@ class _BuildDateTimeline extends StatelessWidget {
       child: InkWell(
           child: Container(
             padding: const EdgeInsets.all(5),
-            width: 55.w,
+            width: context.width(0.15),
             decoration: BoxDecoration(
               boxShadow: selectionBoxShadow,
               gradient: LinearGradient(
@@ -120,21 +120,28 @@ class _BuildDateTimeline extends StatelessWidget {
                 //?Date Month Text
                 /*  Text(
                   DateFormat("MMM", locale).format(date).toUpperCase(),
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  style: context.textTheme.bodySmall!.copyWith(
                       color: selectedTextColor ?? Colors.transparent,
                       fontWeight: FontWeight.w800),
                 ), //Month */
-                Text(
-                  date.day.toString(),
-                  style: Theme.of(context).textTheme.headline4!.copyWith(
-                      color: selectedTextColor, fontWeight: FontWeight.w700),
+                FittedBox(
+                  child: Text(
+                    date.day.toString(),
+                    textScaleFactor: context.textScaleFactor,
+                    style: context.textTheme.headline4!.copyWith(
+                        color: selectedTextColor, fontWeight: FontWeight.w700),
+                  ),
                 ), //Date
                 Padding(
                   padding: const EdgeInsets.only(top: 5.0),
-                  child: Text(
-                    DateFormat("E", context.locale.toString()).format(date),
-                    style: Theme.of(context).textTheme.subtitle2!.copyWith(
-                        color: selectedTextColor, fontWeight: FontWeight.w700),
+                  child: FittedBox(
+                    child: Text(
+                      DateFormat("E", context.locale.toString()).format(date),
+                      textScaleFactor: context.textScaleFactor,
+                      style: context.textTheme.subtitle2!.copyWith(
+                          color: selectedTextColor,
+                          fontWeight: FontWeight.w700),
+                    ),
                   ),
                 ), //WeekDay
               ],
