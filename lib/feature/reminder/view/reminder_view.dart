@@ -176,7 +176,7 @@ class ReminderView extends StatelessWidget {
                       'tr_TR' == context.locale.toString() ? true : false),
               child: child!);
         },
-        //cancelText: '',
+        
         context: context,
         initialTime: TimeOfDay(
             hour: int.parse(viewModel.startTime.split(":")[0]),
