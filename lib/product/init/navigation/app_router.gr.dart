@@ -22,8 +22,10 @@ class _$AppRouter extends RootStackRouter {
           routeData: routeData, child: const TabView());
     },
     ReminderRoute.name: (routeData) {
+      final args = routeData.argsAs<ReminderRouteArgs>();
       return MaterialPageX<dynamic>(
-          routeData: routeData, child: ReminderView());
+          routeData: routeData,
+          child: ReminderView(key: args.key, selectDate: args.selectDate));
     },
     HomeRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
@@ -31,26 +33,14 @@ class _$AppRouter extends RootStackRouter {
     },
     SettingsRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
-          routeData: routeData, child: SettingsView());
-    },
-    DetailRoute.name: (routeData) {
-      final args = routeData.argsAs<DetailRouteArgs>();
-      return MaterialPageX<dynamic>(
-          routeData: routeData,
-          child: DetailView(key: args.key, reminder: args.reminder));
+          routeData: routeData, child: const SettingsView());
     }
   };
 
   @override
   List<RouteConfig> get routes => [
         RouteConfig(TabRoute.name, path: '/', children: [
-          RouteConfig(HomeRoute.name,
-              path: 'home-view',
-              parent: TabRoute.name,
-              children: [
-                RouteConfig(DetailRoute.name,
-                    path: 'detail-view', parent: HomeRoute.name)
-              ]),
+          RouteConfig(HomeRoute.name, path: 'home-view', parent: TabRoute.name),
           RouteConfig(SettingsRoute.name,
               path: 'settings-view', parent: TabRoute.name)
         ]),
@@ -69,17 +59,32 @@ class TabRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [ReminderView]
-class ReminderRoute extends PageRouteInfo<void> {
-  const ReminderRoute() : super(ReminderRoute.name, path: '/reminder-view');
+class ReminderRoute extends PageRouteInfo<ReminderRouteArgs> {
+  ReminderRoute({Key? key, required DateTime selectDate})
+      : super(ReminderRoute.name,
+            path: '/reminder-view',
+            args: ReminderRouteArgs(key: key, selectDate: selectDate));
 
   static const String name = 'ReminderRoute';
+}
+
+class ReminderRouteArgs {
+  const ReminderRouteArgs({this.key, required this.selectDate});
+
+  final Key? key;
+
+  final DateTime selectDate;
+
+  @override
+  String toString() {
+    return 'ReminderRouteArgs{key: $key, selectDate: $selectDate}';
+  }
 }
 
 /// generated route for
 /// [HomeView]
 class HomeRoute extends PageRouteInfo<void> {
-  const HomeRoute({List<PageRouteInfo>? children})
-      : super(HomeRoute.name, path: 'home-view', initialChildren: children);
+  const HomeRoute() : super(HomeRoute.name, path: 'home-view');
 
   static const String name = 'HomeRoute';
 }
@@ -90,28 +95,4 @@ class SettingsRoute extends PageRouteInfo<void> {
   const SettingsRoute() : super(SettingsRoute.name, path: 'settings-view');
 
   static const String name = 'SettingsRoute';
-}
-
-/// generated route for
-/// [DetailView]
-class DetailRoute extends PageRouteInfo<DetailRouteArgs> {
-  DetailRoute({Key? key, required PillModel reminder})
-      : super(DetailRoute.name,
-            path: 'detail-view',
-            args: DetailRouteArgs(key: key, reminder: reminder));
-
-  static const String name = 'DetailRoute';
-}
-
-class DetailRouteArgs {
-  const DetailRouteArgs({this.key, required this.reminder});
-
-  final Key? key;
-
-  final PillModel reminder;
-
-  @override
-  String toString() {
-    return 'DetailRouteArgs{key: $key, reminder: $reminder}';
-  }
 }

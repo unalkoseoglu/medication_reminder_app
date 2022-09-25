@@ -18,8 +18,8 @@ void main() {
           amount: '',
           isComplete: false,
           pillImage: '',
-          alarmTime: '09.08',
-          time: DateTime.now()));
+          time: '10',
+          date: DateTime.now()));
 
       expect(box.values.first.name, 'name');
     },

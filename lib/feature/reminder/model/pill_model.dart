@@ -16,31 +16,33 @@ class PillModel extends HiveObject {
   bool isComplete;
 
   @HiveField(3)
-  DateTime time;
+  DateTime date;
 
   @HiveField(4)
-  String alarmTime;
+  String time;
+
   @HiveField(5)
   String amount;
+
   PillModel(
       {required this.name,
       required this.amount,
       this.isComplete = false,
       required this.pillImage,
-      required this.time,
-      required this.alarmTime});
+      required this.date,
+      required this.time});
 
   factory PillModel.create(
           {required String title,
           String? amount,
           required String pillImage,
-          required DateTime time,
-          required String alarmTime}) =>
+          required DateTime date,
+          required String time}) =>
       PillModel(
           name: title,
           amount: amount ?? ' ',
           isComplete: false,
           pillImage: pillImage,
-          time: time,
-          alarmTime: alarmTime);
+          date: date,
+          time: time);
 }

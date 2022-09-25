@@ -12,9 +12,10 @@ class ReminderViewModel with ChangeNotifier, BaseViewModel {
   late final LocalNotificationService notificationService;
   bool isSelect = false;
   DateTime selectDate = DateTime.now();
+
   String startTime = DateFormat("HH:mm a").format(DateTime.now()).toString();
-  String subtitle(locale) =>
-      DateFormat('EEEE, d MMMM y', locale).format(selectDate);
+  String subtitle(locale, date) =>
+      DateFormat('EEEE, d MMMM y', locale).format(date);
 
   String selectedImage = PillEnum.pillNames[0];
   bool selectImage = false;
@@ -22,6 +23,7 @@ class ReminderViewModel with ChangeNotifier, BaseViewModel {
 
   TextEditingController? nameController;
   TextEditingController? amountController;
+  TextEditingController? repeatController;
   late ICacheManager<PillModel> cacheManager;
 
   ReminderViewModel() {
@@ -30,6 +32,7 @@ class ReminderViewModel with ChangeNotifier, BaseViewModel {
     notificationService.intialize();
     nameController = TextEditingController();
     amountController = TextEditingController();
+    repeatController = TextEditingController();
   }
 
   void addReminder(PillModel item, BuildContext context) {
@@ -38,10 +41,16 @@ class ReminderViewModel with ChangeNotifier, BaseViewModel {
     notifyListeners();
   }
 
-  void selectedDate(DateTime selectedDate) {
-    selectDate = selectedDate;
+  Future<void> scheduleNotification(
+      {required PillModel item, required String dateFormat}) async {
+    DateTime date = DateFormat(dateFormat).parse(item.time.toString());
+    var myTime = DateFormat("HH:mm").format(date).toString();
 
-    notifyListeners();
+    notificationService.showScheduleNotification(
+        id: item.key,
+        item: item,
+        hour: int.parse(myTime.split(":")[0]),
+        minute: int.parse(myTime.split(":")[1]));
   }
 
   void selectImageChange(String imageSelect) {
@@ -54,61 +63,11 @@ class ReminderViewModel with ChangeNotifier, BaseViewModel {
   }
 
   void getTimeUser(context, reminderTime) async {
-    var alarmTime = await reminderTime;
+    var notifiTime = await reminderTime;
 
-    String formatedTime = alarmTime != null
-        ? alarmTime.format(context)
-        : TimeOfDay.now().format(context);
+    String formatedTime = notifiTime.format(context);
     startTime = formatedTime;
 
     notifyListeners();
   }
-
-  /* _showTimePicker(BuildContext context) {
-    return showTimePicker(
-        initialEntryMode: TimePickerEntryMode.input,
-        builder: (_, child) {
-          if (LanguageConstants.instance.trLocale ==
-              context.locale.toString()) {
-            return MediaQuery(
-                data: MediaQuery.of(context)
-                    .copyWith(alwaysUse24HourFormat: true),
-                child: child!);
-          } else {
-            return MediaQuery(
-                data: MediaQuery.of(context)
-                    .copyWith(alwaysUse24HourFormat: false),
-                child: child!);
-          }
-        },
-        cancelText: '',
-        context: context,
-        initialTime: TimeOfDay(
-            hour: int.parse(startTime.split(":")[0]),
-            minute: int.parse(startTime.split(":")[1].split('')[0])));
-  } */
-
-  /*
-  //? Zaman aralığı seçimi
-   void getFrequency(String? selectedFrequency) {
-    selectFrequency = selectedFrequency;
-    notifyListeners();
-  } */
-  /* 
- //? Tarih seçimi
-  void getDateFromUser(BuildContext context) async {
-    DateTime? pickerDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2021),
-      lastDate: DateTime(2050),
-    );
-    if (pickerDate != null) {
-      selectDate = pickerDate;
-
-      selectDateText = DateFormat.yMd().format(selectDate);
-    }
-
-    notifyListeners();
-  } */
 }

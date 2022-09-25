@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:medication_reminder_app/core/extension/context_extension.dart';
+import 'package:medication_reminder_app/product/init/theme/app_theme_light.dart';
 import 'package:provider/provider.dart';
 
 import '../viewModel/date_view_model.dart';
@@ -13,18 +14,18 @@ class DateView extends StatelessWidget {
   final void Function(DateTime selectedDate) onDateChange;
 
   final List<Color> selectionColors = <Color>[
-    MyColors().jamaicanJade,
-    MyColors().stampPadGreen,
+    AppThemeLight.instance.colorSchemeLight!.jamaicanJade,
+    AppThemeLight.instance.colorSchemeLight!.stampPadGreen,
   ];
   final Color deactivedColor = Colors.white;
   final Color selectedTextColor = Colors.white;
-  final Color deactivedTextColor = MyColors().newBuryPort;
+  final Color deactivedTextColor =
+      AppThemeLight.instance.colorSchemeLight!.newBuryPort;
   final List<BoxShadow> selectionBoxShadow = <BoxShadow>[
     BoxShadow(
-      color: MyColors().jamaicanJade,
+      color: AppThemeLight.instance.colorSchemeLight!.jamaicanJade,
       blurRadius: 8,
       spreadRadius: 1,
-      //offset: const Offset(1, 1),
     )
   ];
 
@@ -100,30 +101,34 @@ class _BuildDateTimeline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8),
+      padding: context.paddingAll(0.01),
       child: InkWell(
           child: Container(
-            padding: const EdgeInsets.all(5),
-            width: context.width(0.15),
+            padding: context.paddingAll(0.015),
+            width: context.width(0.13),
             decoration: BoxDecoration(
               boxShadow: selectionBoxShadow,
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: selectionColors),
-              borderRadius: BorderRadius.circular(50),
+              borderRadius: context.borderRadiusAll(0.1),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 //?Date Month Text
-                /*  Text(
-                  DateFormat("MMM", locale).format(date).toUpperCase(),
-                  style: context.textTheme.bodySmall!.copyWith(
-                      color: selectedTextColor ?? Colors.transparent,
-                      fontWeight: FontWeight.w800),
-                ), //Month */
+                context.watch<DateViewModel>().isSelected
+                    ? Text(
+                        DateFormat("MMM", context.locale.toString())
+                            .format(date)
+                            .toUpperCase(),
+                        style: context.textTheme.bodySmall!.copyWith(
+                            color: selectedTextColor ?? Colors.transparent,
+                            fontWeight: FontWeight.w800),
+                      )
+                    : const SizedBox.shrink(), //Month
                 FittedBox(
                   child: Text(
                     date.day.toString(),
@@ -133,7 +138,7 @@ class _BuildDateTimeline extends StatelessWidget {
                   ),
                 ), //Date
                 Padding(
-                  padding: const EdgeInsets.only(top: 5.0),
+                  padding: context.paddingTop(0.005),
                   child: FittedBox(
                     child: Text(
                       DateFormat("E", context.locale.toString()).format(date),
@@ -154,14 +159,4 @@ class _BuildDateTimeline extends StatelessWidget {
           }),
     );
   }
-}
-
-class MyColors {
-  final Color jamaicanJade = const Color(0xff62dbc6);
-  final Color stampPadGreen = const Color(0xff309f8c);
-  final Color heartFelt = const Color(0xffffafc6);
-  final Color ultraRed = const Color(0xffff6c87);
-  final Color yankesBlue = const Color(0xff1e2843);
-  final Color newBuryPort = const Color(0xff45597a);
-  final Color droplet = const Color.fromARGB(43, 173, 218, 253);
 }

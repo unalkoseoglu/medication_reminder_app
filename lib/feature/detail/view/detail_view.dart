@@ -56,8 +56,8 @@ class DetailView extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(
-                            height: 40,
-                            child: ScheduleList(count: 3, width: 0.1)),
+                          height: 40,
+                        ),
                         ICustomCard(
                           child: ListTile(
                             horizontalTitleGap: 0,
@@ -69,7 +69,7 @@ class DetailView extends StatelessWidget {
                                 color: Colors.green,
                               ),
                             ),
-                            title: Text(LocaleKeys.amount.tr()),
+                            title: Text(LocaleKeys.reminder_amount.tr()),
                             subtitle: Text(reminder.amount),
                           ),
                         ),

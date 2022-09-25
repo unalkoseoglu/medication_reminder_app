@@ -1,12 +1,27 @@
 {
-    "home":"Home",
-    "medicineName":"Medicine Name",
-    "amount":"Amount",
-    "settings":"Settings",
-    "newReminder":"New Reminder",
-    "addReminder":"Add Reminder",
-    "type":"Type",
-    "noReminder":"No Reminder",
-    "lang":"Language",
-    "language":"English"
+    "home":{
+        "title":"Home",
+        "noreminder":"No Reminder"
+        
+    },
+    "reminder":{
+        "medicinename":"Medicine Name",
+        "medicine":"Paracematol XL2",
+        "amount":"Amount",
+        "mg_ml":"mg/ml",
+        "newreminder":"New Reminder",
+        "addreminder":"Add Reminder",
+        "type":"Type",   
+        "repeat":"Repeat",
+        "day":"Repeat Day",
+        "time":"Time"
+    },
+       "settings":{
+        "title":"Settings",
+        "lang":"Language",
+        "language":"English",
+        "notifications":"Notifications",
+        "darkMode":"Dark Mode",
+        "soon":"Soon"
+    }
 }

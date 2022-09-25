@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:medication_reminder_app/core/init/app/constants/cache_constants.dart';
@@ -24,16 +23,6 @@ class HomeViewModel with ChangeNotifier, BaseViewModel {
 
   void clearOldReminder(List<PillModel> items) {
     items.isEmpty ? cacheManager.clear() : null;
-  }
-
-  Future<void> scheduleNotification({required PillModel item}) async {
-    DateTime date = DateFormat.Hm().parse(item.alarmTime.toString());
-    var myTime = DateFormat("HH:mm").format(date);
-    notificationService.showScheduleNotification(
-        id: item.key,
-        item: item,
-        hour: int.parse(myTime.toString().split(":")[0]),
-        minute: int.parse(myTime.toString().split(":")[1]));
   }
 
   void selectedDate(DateTime selectedDate) {

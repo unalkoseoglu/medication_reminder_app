@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:medication_reminder_app/core/keys/global_key.dart';
 import 'package:medication_reminder_app/feature/home/date/viewModel/date_view_model.dart';
 import 'package:medication_reminder_app/feature/settings/viewModel/settings_view_model.dart';
 
@@ -40,13 +39,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerDelegate: _appRouter.delegate(),
-      key: GlobalContextKey.instance.globalKey,
       routeInformationParser: _appRouter.defaultRouteParser(),
       localizationsDelegates: context.localizationDelegates,
       locale: context.locale,
       supportedLocales: context.supportedLocales,
       theme: AppThemeLight.instance.theme,
-      title: 'Medication Reminder App',
+      title: 'Medication Reminder',
       debugShowCheckedModeBanner: false,
     );
   }

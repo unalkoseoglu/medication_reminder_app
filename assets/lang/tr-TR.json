@@ -1,12 +1,26 @@
 {
-    "home":"Ana Sayfa",
-"medicineName":"İlaç İsmi",
-"amount":"Miktar",
-"settings":"Ayarlar",
-"newReminder":"Yeni Hatırlatıcı",
-"addReminder":"Hatırlatıcı Ekle",
-"type":"Tip",
-"noReminder":"Hatırlatıcı Yok",
-"lang":"Dil",
-"language":"Türkçe"
+"home":{
+    "title":"Ana Sayfa",
+    "noreminder":"Hatırlatıcı Yok"
+},
+"reminder":{
+    "medicinename":"İlaç İsmi",
+    "medicine":"Öksürük Şurubu",
+    "amount":"Miktar",
+    "mg_ml":"mg/ml",
+    "newreminder":"Yeni Hatırlatıcı",
+    "addreminder":"Hatırlatıcı Ekle",
+    "type":"Tip",
+    "repeat":"Tekrar",
+    "day":"Tekrarlanacak Gün",
+    "time":"Zaman"
+},
+"settings":{
+    "title":"Ayarlar",
+    "lang":"Dil",
+    "language":"Türkçe",
+    "notifications":"Bildirimler",
+    "darkMode":"Karanlık Mod",
+    "soon":"Yakında"
+}
 }

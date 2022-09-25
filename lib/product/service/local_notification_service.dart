@@ -86,19 +86,20 @@ class LocalNotificationService {
       item.key,
       item.name,
       item.amount,
-      _convertTime(hour, minute),
+      _convertTime(item.date, hour, minute),
       details,
       androidAllowWhileIdle: true,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
-      matchDateTimeComponents: DateTimeComponents.time,
+      matchDateTimeComponents: DateTimeComponents.dateAndTime,
     );
   }
 
-  tz.TZDateTime _convertTime(int hour, int minutes) {
-    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+  tz.TZDateTime _convertTime(DateTime time, int hour, int minute) {
     tz.TZDateTime scheduleDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minutes);
+        tz.TZDateTime(tz.local, time.year, time.month, time.day, hour, minute);
+    print(scheduleDate);
+
     /*  if (scheduleDate.isBefore(now)) {
       scheduleDate = scheduleDate.add(const Duration(days: 1));
     } */

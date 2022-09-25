@@ -8,7 +8,7 @@ import 'package:medication_reminder_app/core/extension/image_extension.dart';
 
 import 'package:medication_reminder_app/feature/home/viewModel/home_view_model.dart';
 import 'package:medication_reminder_app/product/widget/appBar/custom_app_bar.dart';
-import 'package:medication_reminder_app/product/widget/card/custom_card.dart';
+import 'package:medication_reminder_app/product/widget/card/pill_card.dart';
 
 import 'package:provider/provider.dart';
 
@@ -20,11 +20,12 @@ import '../date/view/date_view.dart';
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
 
-  final subtitle = 'Hi Ünal';
-
   @override
   Widget build(BuildContext context) {
-    final String title = DateFormat('d MMMM y', context.locale.toString())
+    final String title = DateFormat('EEEEE', context.locale.toString())
+        .format(DateTime.now())
+        .toString();
+    final String subtitle = DateFormat('d MMMM y', context.locale.toString())
         .format(DateTime.now())
         .toString();
     return BaseView<HomeViewModel>(
@@ -36,10 +37,18 @@ class HomeView extends StatelessWidget {
         return Scaffold(
             appBar: CustomAppBar(
               context,
-              preferredSize: 0.2,
+              preferredSize: context.height(0.00025),
               subtitle: subtitle,
               title: title,
-              child: _buildDateView(context),
+              actions: [
+                IconButton(onPressed: () {}, icon: const Icon(Icons.search))
+              ],
+              child: Column(
+                children: [
+                  _buildDateView(context),
+                  context.emptySizedHeightBox(0.07),
+                ],
+              ),
             ),
             body: ValueListenableBuilder<Box<PillModel>>(
               valueListenable: viewModel.cacheManager.listenToReminder(),
@@ -58,6 +67,23 @@ class HomeView extends StatelessWidget {
     );
   }
 
+  Widget _buildDateView(BuildContext context) {
+    return SizedBox(
+        height: context.height(0.14),
+        width: context.w,
+        child: DateView(
+          DateTime.now(),
+          initialSelectDate: DateTime.now(),
+          onDateChange: (selectedDate) =>
+              context.read<HomeViewModel>().selectedDate(selectedDate),
+        ));
+  }
+
+  Widget _circularProgses(BuildContext context) {
+    return Lottie.asset('pills'.lottie,
+        height: context.height(.2), width: context.w);
+  }
+
   ListView _reminderListView(
       List<PillModel> reminders, HomeViewModel viewModel) {
     return ListView.builder(
@@ -66,20 +92,18 @@ class HomeView extends StatelessWidget {
         itemCount: reminders.length,
         itemBuilder: (BuildContext context, int index) {
           if (DateFormat.yMd(context.locale.toString())
-                  .format(reminders[index].time) ==
+                  .format(reminders[index].date) ==
               DateFormat.yMd(context.locale.toString())
                   .format(context.watch<HomeViewModel>().selectDate)) {
-            viewModel.scheduleNotification(item: reminders[index]);
-
             return _buildCard(context, reminders, index);
           }
           return const SizedBox.shrink();
         });
   }
 
-  CustomCard _buildCard(
+  PillCard _buildCard(
       BuildContext context, List<PillModel> reminders, int index) {
-    return CustomCard(
+    return PillCard(
         item: reminders[index],
         onTap: () => customBottomSheet(context, removeReminder: () {
               context
@@ -93,25 +117,5 @@ class HomeView extends StatelessWidget {
                   );
               context.router.pop();
             }));
-  }
-
-  Widget _circularProgses(BuildContext context) {
-    return Lottie.asset('pills'.lottie,
-        height: context.height(.2), width: context.w);
-  }
-
-  Widget _buildDateView(BuildContext context) {
-    return SizedBox(
-        height: context.height(0.17),
-        width: context.w,
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 10.0),
-          child: DateView(
-            DateTime.now(),
-            initialSelectDate: DateTime.now(),
-            onDateChange: (selectedDate) =>
-                context.read<HomeViewModel>().selectedDate(selectedDate),
-          ),
-        ));
   }
 }

@@ -22,7 +22,7 @@ Future<dynamic> customBottomSheet(BuildContext context,
                   color: Colors.white.withOpacity(0.2),
                   borderRadius:
                       const BorderRadius.vertical(top: Radius.circular(20))),
-              height: context.height(0.22),
+              height: context.height(0.25),
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
@@ -30,8 +30,10 @@ Future<dynamic> customBottomSheet(BuildContext context,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      _removeButton(removeReminder),
-                      _takeButton(takePill)
+                      const Spacer(),
+                      Expanded(flex: 2, child: _removeButton(removeReminder)),
+                      const Spacer(),
+                      Expanded(flex: 2, child: _takeButton(takePill))
                     ],
                   ),
                 ),
@@ -40,8 +42,8 @@ Future<dynamic> customBottomSheet(BuildContext context,
           ),
         ),
         Positioned(
-            top: context.height(-25),
-            right: context.width(12),
+            bottom: context.height(0.21),
+            right: context.width(0.03),
             child: _closeButton(context)),
       ]);
     },

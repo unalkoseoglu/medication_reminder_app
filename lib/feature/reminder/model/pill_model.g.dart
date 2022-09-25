@@ -21,8 +21,8 @@ class PillModelAdapter extends TypeAdapter<PillModel> {
       amount: fields[5] as String,
       isComplete: fields[2] as bool,
       pillImage: fields[1] as String?,
-      time: fields[3] as DateTime,
-      alarmTime: fields[4] as String,
+      date: fields[3] as DateTime,
+      time: fields[4] as String,
     );
   }
 
@@ -37,9 +37,9 @@ class PillModelAdapter extends TypeAdapter<PillModel> {
       ..writeByte(2)
       ..write(obj.isComplete)
       ..writeByte(3)
-      ..write(obj.time)
+      ..write(obj.date)
       ..writeByte(4)
-      ..write(obj.alarmTime)
+      ..write(obj.time)
       ..writeByte(5)
       ..write(obj.amount);
   }

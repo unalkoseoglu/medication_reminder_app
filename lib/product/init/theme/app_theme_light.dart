@@ -14,14 +14,17 @@ class AppThemeLight extends AppTheme with LightThemeInterface {
 
   @override
   ThemeData get theme => ThemeData.light().copyWith(
-      bottomNavigationBarTheme: bottomNavigationBarTheme,
-      appBarTheme: appBarTheme,
-      scaffoldBackgroundColor: colorSchemeLight!.washMe,
-      colorScheme: _appColorScheme,
-      cardTheme: cardTheme,
-      listTileTheme: listTileTheme,
-      elevatedButtonTheme: elevatedButtonTheme,
-      floatingActionButtonTheme: floatingActionButtonTheme);
+        bottomNavigationBarTheme: bottomNavigationBarTheme,
+        appBarTheme: appBarTheme,
+        scaffoldBackgroundColor: colorSchemeLight!.washMe.withOpacity(0.85),
+        colorScheme: _appColorScheme,
+        cardTheme: cardTheme,
+        listTileTheme: listTileTheme,
+        elevatedButtonTheme: elevatedButtonTheme,
+        outlinedButtonTheme: outlinedButtonTheme,
+        floatingActionButtonTheme: floatingActionButtonTheme,
+        snackBarTheme: snackBarTheme,
+      );
 
   ColorScheme get _appColorScheme => ColorScheme(
         brightness: colorSchemeLight!.brightnessLight,
@@ -46,7 +49,7 @@ class AppThemeLight extends AppTheme with LightThemeInterface {
       );
   AppBarTheme get appBarTheme => AppBarTheme(
       systemOverlayStyle: colorSchemeLight!.systemUiOverlayStyle,
-      backgroundColor: Colors.transparent,
+      backgroundColor: colorSchemeLight!.washMe.withOpacity(0.4),
       elevation: 1,
       shadowColor: colorSchemeLight!.alarm,
       titleTextStyle: TextStyle(color: colorSchemeLight!.blackMetal),
@@ -65,7 +68,7 @@ class AppThemeLight extends AppTheme with LightThemeInterface {
 
   CardTheme get cardTheme => CardTheme(
         color: colorSchemeLight!.washMe,
-        elevation: 1,
+        elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       );
   ElevatedButtonThemeData get elevatedButtonTheme => ElevatedButtonThemeData(
@@ -75,11 +78,22 @@ class AppThemeLight extends AppTheme with LightThemeInterface {
           textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 18),
           onPrimary: colorSchemeLight!.washMe));
   ListTileThemeData get listTileTheme => const ListTileThemeData(
       minVerticalPadding: 8, selectedColor: Colors.redAccent);
   TimePickerThemeData get pickerTheme => const TimePickerThemeData(
         inputDecorationTheme: InputDecorationTheme(),
       );
+  OutlinedButtonThemeData get outlinedButtonTheme => OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+          padding: const EdgeInsets.all(8),
+          side: BorderSide(width: 3, color: _appColorScheme.primary)));
+
+  SnackBarThemeData get snackBarTheme => SnackBarThemeData(
+      backgroundColor: colorSchemeLight!.ultraRed,
+      contentTextStyle:
+          const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+      actionTextColor: colorSchemeLight!.washMe,
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)));
 }
